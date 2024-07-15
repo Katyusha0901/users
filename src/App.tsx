@@ -1,12 +1,11 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { User } from "./types";
 import { UserCard } from "./user/UserCard";
 import style from "./app.module.scss";
-import { text } from "stream/consumers";
 
 export function App() {
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [inputText, setInputText] = useState<string>("");
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/users")
@@ -16,20 +15,22 @@ export function App() {
       })
       .catch((err) => console.log("Ошибка", err));
   }, []);
-  console.log(allUsers);
+
   return (
     <div className={style.app}>
       <div className={style.title}>Users</div>
 
       <input
         className={style.search}
-        value="Search"
-        onChange={(information) => information.target.value}
+        placeholder="Search"
+        onChange={(e) => {
+          setInputText(e.target.value.toString().toLowerCase());
+        }}
       />
 
       <div className={style.content}>
         {allUsers.map((user) => (
-          <UserCard user={user} />
+          <UserCard key={user.id} user={user} inputText={inputText} />
         ))}
       </div>
     </div>

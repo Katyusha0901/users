@@ -1,21 +1,33 @@
 import { User } from "../types";
-import { useState } from "react";
+import { useMemo } from "react";
 import styles from "./userCard.module.scss";
 
 interface Props {
   user: User;
+  inputText: string;
 }
-export const UserCard: React.FC<Props> = ({ user }) => {
-  const [isActive, setIsActive] = useState(false);
+export const UserCard: React.FC<Props> = ({ user, inputText }) => {
+  const userInformation: string[] = [
+    user.name.firstname,
+    user.name.lastname,
+    `${user.name.firstname} ${user.name.lastname}`,
+    user.email,
+    user.phone,
+  ];
+
+  const isActive = useMemo(
+    () =>
+      userInformation.some((characteristic) => {
+        return characteristic.includes(inputText) && inputText !== "";
+      }),
+    [inputText]
+  );
 
   return (
     <div
       className={
         isActive ? `${styles.card} ${styles.card_active}` : `${styles.card}`
       }
-      onClick={() => {
-        setIsActive(!isActive);
-      }}
     >
       <div className={styles.title}>
         {user.name.firstname} {user.name.lastname}
