@@ -1,6 +1,7 @@
 import { User } from "../types";
 import { useState } from "react";
 import styles from "./userCard.module.scss";
+
 interface Props {
   user: User;
 }
@@ -9,16 +10,18 @@ export const UserCard: React.FC<Props> = ({ user }) => {
 
   return (
     <div
-      className={isActive ? "card card-active" : "card"}
+      className={
+        isActive ? `${styles.card} ${styles.card_active}` : `${styles.card}`
+      }
       onClick={() => {
-        setIsActive(true);
+        setIsActive(!isActive);
       }}
     >
-      <div className="title">
+      <div className={styles.title}>
         {user.name.firstname} {user.name.lastname}
       </div>
-      <div className="card__text">{user.email}</div>
-      <div className="card__text">{user.phone}</div>
+      <div className={styles.text}>{user.email}</div>
+      <div className={styles.text}>{user.phone}</div>
     </div>
   );
 };
